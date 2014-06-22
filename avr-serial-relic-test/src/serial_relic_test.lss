@@ -1,0 +1,628 @@
+
+serial_relic_test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000010  00800100  0000029a  0000032e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         0000029a  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000060  00800110  00800110  0000033e  2**0
+                  ALLOC
+  3 .stab         000006cc  00000000  00000000  00000340  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000054  00000000  00000000  00000a0c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .comment      00000011  00000000  00000000  00000a60  2**0
+                  CONTENTS, READONLY
+  6 .debug_aranges 00000048  00000000  00000000  00000a71  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   000004b6  00000000  00000000  00000ab9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 0000026a  00000000  00000000  00000f6f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   000001d0  00000000  00000000  000011d9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_frame  000000c4  00000000  00000000  000013ac  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_str    0000015b  00000000  00000000  00001470  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_loc    00000314  00000000  00000000  000015cb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_ranges 00000018  00000000  00000000  000018df  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+   8:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+   c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  10:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  14:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  18:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  1c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  20:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  24:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  28:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  2c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  30:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  34:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  38:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  3c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  40:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  44:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  48:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  4c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  50:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  54:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  58:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  5c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  60:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+  64:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+
+00000074 <__do_copy_data>:
+  74:	11 e0       	ldi	r17, 0x01	; 1
+  76:	a0 e0       	ldi	r26, 0x00	; 0
+  78:	b1 e0       	ldi	r27, 0x01	; 1
+  7a:	ea e9       	ldi	r30, 0x9A	; 154
+  7c:	f2 e0       	ldi	r31, 0x02	; 2
+  7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
+  80:	05 90       	lpm	r0, Z+
+  82:	0d 92       	st	X+, r0
+  84:	a0 31       	cpi	r26, 0x10	; 16
+  86:	b1 07       	cpc	r27, r17
+  88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
+
+0000008a <__do_clear_bss>:
+  8a:	11 e0       	ldi	r17, 0x01	; 1
+  8c:	a0 e1       	ldi	r26, 0x10	; 16
+  8e:	b1 e0       	ldi	r27, 0x01	; 1
+  90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
+
+00000092 <.do_clear_bss_loop>:
+  92:	1d 92       	st	X+, r1
+
+00000094 <.do_clear_bss_start>:
+  94:	a0 37       	cpi	r26, 0x70	; 112
+  96:	b1 07       	cpc	r27, r17
+  98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
+  9a:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <main>
+  9e:	0c 94 4b 01 	jmp	0x296	; 0x296 <_exit>
+
+000000a2 <__bad_interrupt>:
+  a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000a6 <hex_decode>:
+#define PLAIN 2
+
+char hex_lookup[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
+uint8_t* hex_decode(const char *in, int len,uint8_t *out)
+{
+  a6:	cf 93       	push	r28
+  a8:	df 93       	push	r29
+  aa:	fa 01       	movw	r30, r20
+    unsigned int i, t, hn, ln;
+
+    for (t = 0,i = 0; i < len; i+=2,++t) {
+  ac:	20 e0       	ldi	r18, 0x00	; 0
+  ae:	30 e0       	ldi	r19, 0x00	; 0
+  b0:	1e c0       	rjmp	.+60     	; 0xee <hex_decode+0x48>
+#define KEY 1
+#define PLAIN 2
+
+char hex_lookup[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
+uint8_t* hex_decode(const char *in, int len,uint8_t *out)
+  b2:	dc 01       	movw	r26, r24
+  b4:	a2 0f       	add	r26, r18
+  b6:	b3 1f       	adc	r27, r19
+{
+    unsigned int i, t, hn, ln;
+
+    for (t = 0,i = 0; i < len; i+=2,++t) {
+
+        hn = in[i] > '9' ? (in[i]|32) - 'a' + 10 : in[i] - '0';
+  b8:	cc 91       	ld	r28, X
+  ba:	ca 33       	cpi	r28, 0x3A	; 58
+  bc:	28 f0       	brcs	.+10     	; 0xc8 <hex_decode+0x22>
+  be:	c0 62       	ori	r28, 0x20	; 32
+  c0:	d0 e0       	ldi	r29, 0x00	; 0
+  c2:	c7 55       	subi	r28, 0x57	; 87
+  c4:	d1 09       	sbc	r29, r1
+  c6:	02 c0       	rjmp	.+4      	; 0xcc <hex_decode+0x26>
+  c8:	d0 e0       	ldi	r29, 0x00	; 0
+  ca:	e0 97       	sbiw	r28, 0x30	; 48
+        ln = in[i+1] > '9' ? (in[i+1]|32) - 'a' + 10 : in[i+1] - '0';
+  cc:	11 96       	adiw	r26, 0x01	; 1
+  ce:	ac 91       	ld	r26, X
+  d0:	aa 33       	cpi	r26, 0x3A	; 58
+  d2:	28 f0       	brcs	.+10     	; 0xde <hex_decode+0x38>
+  d4:	a0 62       	ori	r26, 0x20	; 32
+  d6:	b0 e0       	ldi	r27, 0x00	; 0
+  d8:	a7 55       	subi	r26, 0x57	; 87
+  da:	b1 09       	sbc	r27, r1
+  dc:	02 c0       	rjmp	.+4      	; 0xe2 <hex_decode+0x3c>
+  de:	b0 e0       	ldi	r27, 0x00	; 0
+  e0:	d0 97       	sbiw	r26, 0x30	; 48
+        out[t] = (hn << 4 ) | ln;
+  e2:	c2 95       	swap	r28
+  e4:	c0 7f       	andi	r28, 0xF0	; 240
+  e6:	ca 2b       	or	r28, r26
+  e8:	c1 93       	st	Z+, r28
+
+uint8_t* hex_decode(const char *in, int len,uint8_t *out)
+{
+    unsigned int i, t, hn, ln;
+
+    for (t = 0,i = 0; i < len; i+=2,++t) {
+  ea:	2e 5f       	subi	r18, 0xFE	; 254
+  ec:	3f 4f       	sbci	r19, 0xFF	; 255
+  ee:	26 17       	cp	r18, r22
+  f0:	37 07       	cpc	r19, r23
+  f2:	f8 f2       	brcs	.-66     	; 0xb2 <hex_decode+0xc>
+        ln = in[i+1] > '9' ? (in[i+1]|32) - 'a' + 10 : in[i+1] - '0';
+        out[t] = (hn << 4 ) | ln;
+    }
+
+    return out;
+}
+  f4:	ca 01       	movw	r24, r20
+  f6:	df 91       	pop	r29
+  f8:	cf 91       	pop	r28
+  fa:	08 95       	ret
+
+000000fc <hex_print>:
+
+void hex_print(const uint8_t * in, int len, char *out)
+{
+  fc:	1f 93       	push	r17
+  fe:	cf 93       	push	r28
+ 100:	df 93       	push	r29
+ 102:	fc 01       	movw	r30, r24
+    }
+
+    return out;
+}
+
+void hex_print(const uint8_t * in, int len, char *out)
+ 104:	da 01       	movw	r26, r20
+ 106:	11 96       	adiw	r26, 0x01	; 1
+ 108:	9b 01       	movw	r18, r22
+{
+    unsigned int i,j;
+    j=0;
+    for (i=0; i < len; i++) {
+ 10a:	80 e0       	ldi	r24, 0x00	; 0
+ 10c:	90 e0       	ldi	r25, 0x00	; 0
+ 10e:	16 c0       	rjmp	.+44     	; 0x13c <hex_print+0x40>
+    }
+
+    return out;
+}
+
+void hex_print(const uint8_t * in, int len, char *out)
+ 110:	bf 01       	movw	r22, r30
+{
+    unsigned int i,j;
+    j=0;
+    for (i=0; i < len; i++) {
+        out[j++] = hex_lookup[in[i] >> 4];
+ 112:	c1 91       	ld	r28, Z+
+ 114:	c2 95       	swap	r28
+ 116:	cf 70       	andi	r28, 0x0F	; 15
+ 118:	d0 e0       	ldi	r29, 0x00	; 0
+ 11a:	c0 50       	subi	r28, 0x00	; 0
+ 11c:	df 4f       	sbci	r29, 0xFF	; 255
+ 11e:	18 81       	ld	r17, Y
+    }
+
+    return out;
+}
+
+void hex_print(const uint8_t * in, int len, char *out)
+ 120:	ed 01       	movw	r28, r26
+ 122:	21 97       	sbiw	r28, 0x01	; 1
+{
+    unsigned int i,j;
+    j=0;
+    for (i=0; i < len; i++) {
+        out[j++] = hex_lookup[in[i] >> 4];
+ 124:	18 83       	st	Y, r17
+        out[j++] = hex_lookup[in[i] & 0x0F];
+ 126:	eb 01       	movw	r28, r22
+ 128:	68 81       	ld	r22, Y
+ 12a:	6f 70       	andi	r22, 0x0F	; 15
+ 12c:	c6 2f       	mov	r28, r22
+ 12e:	d0 e0       	ldi	r29, 0x00	; 0
+ 130:	c0 50       	subi	r28, 0x00	; 0
+ 132:	df 4f       	sbci	r29, 0xFF	; 255
+ 134:	68 81       	ld	r22, Y
+ 136:	6c 93       	st	X, r22
+
+void hex_print(const uint8_t * in, int len, char *out)
+{
+    unsigned int i,j;
+    j=0;
+    for (i=0; i < len; i++) {
+ 138:	01 96       	adiw	r24, 0x01	; 1
+ 13a:	12 96       	adiw	r26, 0x02	; 2
+ 13c:	82 17       	cp	r24, r18
+ 13e:	93 07       	cpc	r25, r19
+ 140:	39 f7       	brne	.-50     	; 0x110 <hex_print+0x14>
+        out[j++] = hex_lookup[in[i] >> 4];
+        out[j++] = hex_lookup[in[i] & 0x0F];
+    }
+
+    out[j] = 0;
+ 142:	fc 01       	movw	r30, r24
+ 144:	ee 0f       	add	r30, r30
+ 146:	ff 1f       	adc	r31, r31
+ 148:	e4 0f       	add	r30, r20
+ 14a:	f5 1f       	adc	r31, r21
+ 14c:	10 82       	st	Z, r1
+}
+ 14e:	df 91       	pop	r29
+ 150:	cf 91       	pop	r28
+ 152:	1f 91       	pop	r17
+ 154:	08 95       	ret
+
+00000156 <init_uart0>:
+lets you select between a few baud rates*/
+
+void init_uart0(void)
+{
+    //turn on TX and RX
+    RXTXEN0_REG = (1<<RX0EN) | (1<<TX0EN);
+ 156:	88 e1       	ldi	r24, 0x18	; 24
+ 158:	80 93 c1 00 	sts	0x00C1, r24
+    //set up baud rate
+#if (BAUDREGS == 2)
+    BAUD0H_REG = (unsigned char)(BAUD_RATE0_REG >> 8);
+    BAUD0L_REG = (unsigned char)BAUD_RATE0_REG;
+#else
+    BAUD0L_REG = (unsigned char)BAUD_RATE0_REG;
+ 15c:	8b e0       	ldi	r24, 0x0B	; 11
+ 15e:	80 93 c4 00 	sts	0x00C4, r24
+ 162:	08 95       	ret
+
+00000164 <input_ch_w_timeout_0>:
+#endif
+    return;
+}
+
+unsigned char input_ch_w_timeout_0(char *data, volatile unsigned int timeout) {
+ 164:	cf 93       	push	r28
+ 166:	df 93       	push	r29
+ 168:	00 d0       	rcall	.+0      	; 0x16a <input_ch_w_timeout_0+0x6>
+ 16a:	cd b7       	in	r28, 0x3d	; 61
+ 16c:	de b7       	in	r29, 0x3e	; 62
+ 16e:	7a 83       	std	Y+2, r23	; 0x02
+ 170:	69 83       	std	Y+1, r22	; 0x01
+    unsigned int timeout_counter = 0;
+ 172:	20 e0       	ldi	r18, 0x00	; 0
+ 174:	30 e0       	ldi	r19, 0x00	; 0
+
+    //check if a byte has been received or if the timeout has been excedded
+    while (timeout_counter != timeout)
+ 176:	0c c0       	rjmp	.+24     	; 0x190 <input_ch_w_timeout_0+0x2c>
+    {
+        if ((STAT0RXTX_REG & (1<<RX0C)) == (1<<RX0C))
+ 178:	40 91 c0 00 	lds	r20, 0x00C0
+ 17c:	47 ff       	sbrs	r20, 7
+ 17e:	06 c0       	rjmp	.+12     	; 0x18c <input_ch_w_timeout_0+0x28>
+        {
+            *data = UDR0;
+ 180:	20 91 c6 00 	lds	r18, 0x00C6
+ 184:	fc 01       	movw	r30, r24
+ 186:	20 83       	st	Z, r18
+            return BYTE_REC;
+ 188:	80 e0       	ldi	r24, 0x00	; 0
+ 18a:	08 c0       	rjmp	.+16     	; 0x19c <input_ch_w_timeout_0+0x38>
+        }
+        timeout_counter++;
+ 18c:	2f 5f       	subi	r18, 0xFF	; 255
+ 18e:	3f 4f       	sbci	r19, 0xFF	; 255
+
+unsigned char input_ch_w_timeout_0(char *data, volatile unsigned int timeout) {
+    unsigned int timeout_counter = 0;
+
+    //check if a byte has been received or if the timeout has been excedded
+    while (timeout_counter != timeout)
+ 190:	49 81       	ldd	r20, Y+1	; 0x01
+ 192:	5a 81       	ldd	r21, Y+2	; 0x02
+ 194:	24 17       	cp	r18, r20
+ 196:	35 07       	cpc	r19, r21
+ 198:	79 f7       	brne	.-34     	; 0x178 <input_ch_w_timeout_0+0x14>
+            return BYTE_REC;
+        }
+        timeout_counter++;
+    }
+
+    return TIMEOUT;
+ 19a:	81 e0       	ldi	r24, 0x01	; 1
+}
+ 19c:	0f 90       	pop	r0
+ 19e:	0f 90       	pop	r0
+ 1a0:	df 91       	pop	r29
+ 1a2:	cf 91       	pop	r28
+ 1a4:	08 95       	ret
+
+000001a6 <input_ch_0>:
+
+char input_ch_0(void) {
+    //check if a byte has been recieved or if the timeout has been excedded
+    while ((STAT0RXTX_REG & (1<<RX0C)) != (1<<RX0C))
+ 1a6:	80 91 c0 00 	lds	r24, 0x00C0
+ 1aa:	87 ff       	sbrs	r24, 7
+ 1ac:	fc cf       	rjmp	.-8      	; 0x1a6 <input_ch_0>
+    {
+        continue;
+    }
+    return UDR0;
+ 1ae:	80 91 c6 00 	lds	r24, 0x00C6
+}
+ 1b2:	08 95       	ret
+
+000001b4 <output_ch_0>:
+
+void output_ch_0(char data)
+{
+    while ((STAT0RXTX_REG & (1<<UDR0E)) != (1<<UDR0E))
+ 1b4:	90 91 c0 00 	lds	r25, 0x00C0
+ 1b8:	95 ff       	sbrs	r25, 5
+ 1ba:	fc cf       	rjmp	.-8      	; 0x1b4 <output_ch_0>
+    {
+        continue;
+    }
+    UDR0 = data;
+ 1bc:	80 93 c6 00 	sts	0x00C6, r24
+ 1c0:	08 95       	ret
+
+000001c2 <main>:
+#define trigger_high()  PORTC |= 0x01
+#define trigger_low()   PORTC &= ~(0x01)
+
+
+int main (void) {
+    init_uart0();
+ 1c2:	0e 94 ab 00 	call	0x156	; 0x156 <init_uart0>
+
+    /* For 2 MHz crystal use this hack */
+    //BAUD0L_REG = 12;
+
+    trigger_setup();
+ 1c6:	38 9a       	sbi	0x07, 0	; 7
+
+        c = input_ch_0();
+
+        if (c == 'x') {
+            ptr = 0;
+            state = IDLE;
+ 1c8:	10 e0       	ldi	r17, 0x00	; 0
+ 1ca:	03 c0       	rjmp	.+6      	; 0x1d2 <main+0x10>
+            continue;
+        }
+
+        if (c == 'k') {
+            ptr = 0;
+            state = KEY;
+ 1cc:	11 e0       	ldi	r17, 0x01	; 1
+ 1ce:	01 c0       	rjmp	.+2      	; 0x1d2 <main+0x10>
+            continue;
+        }
+
+        else if (c == 'p') {
+            ptr = 0;
+            state = PLAIN;
+ 1d0:	12 e0       	ldi	r17, 0x02	; 2
+            state = KEY;
+            continue;
+        }
+
+        else if (c == 'p') {
+            ptr = 0;
+ 1d2:	c0 e0       	ldi	r28, 0x00	; 0
+ 1d4:	d0 e0       	ldi	r29, 0x00	; 0
+ 1d6:	01 c0       	rjmp	.+2      	; 0x1da <main+0x18>
+                output_ch_0('\n');
+
+                state = IDLE;
+            } else {
+                if (ptr >= BUFLEN){
+                    state = IDLE;
+ 1d8:	10 e0       	ldi	r17, 0x00	; 0
+    uint8_t newosc;
+#endif
+
+    while(1){
+
+        c = input_ch_0();
+ 1da:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <input_ch_0>
+
+        if (c == 'x') {
+ 1de:	88 37       	cpi	r24, 0x78	; 120
+ 1e0:	99 f3       	breq	.-26     	; 0x1c8 <main+0x6>
+            ptr = 0;
+            state = IDLE;
+            continue;
+        }
+
+        if (c == 'k') {
+ 1e2:	8b 36       	cpi	r24, 0x6B	; 107
+ 1e4:	99 f3       	breq	.-26     	; 0x1cc <main+0xa>
+            ptr = 0;
+            state = KEY;
+            continue;
+        }
+
+        else if (c == 'p') {
+ 1e6:	80 37       	cpi	r24, 0x70	; 112
+ 1e8:	99 f3       	breq	.-26     	; 0x1d0 <main+0xe>
+            state = PLAIN;
+            continue;
+        }
+
+
+        else if (state == KEY) {
+ 1ea:	11 30       	cpi	r17, 0x01	; 1
+ 1ec:	89 f4       	brne	.+34     	; 0x210 <main+0x4e>
+ 1ee:	fe 01       	movw	r30, r28
+ 1f0:	e0 5e       	subi	r30, 0xE0	; 224
+ 1f2:	fe 4f       	sbci	r31, 0xFE	; 254
+            if ((c == '\n') || (c == '\r')) {
+ 1f4:	8a 30       	cpi	r24, 0x0A	; 10
+ 1f6:	19 f0       	breq	.+6      	; 0x1fe <main+0x3c>
+ 1f8:	8d 30       	cpi	r24, 0x0D	; 13
+ 1fa:	09 f0       	breq	.+2      	; 0x1fe <main+0x3c>
+ 1fc:	49 c0       	rjmp	.+146    	; 0x290 <main+0xce>
+                asciibuf[ptr] = 0;
+ 1fe:	10 82       	st	Z, r1
+                hex_decode(asciibuf, ptr, tmp);
+ 200:	40 e1       	ldi	r20, 0x10	; 16
+ 202:	51 e0       	ldi	r21, 0x01	; 1
+ 204:	be 01       	movw	r22, r28
+ 206:	80 e2       	ldi	r24, 0x20	; 32
+ 208:	91 e0       	ldi	r25, 0x01	; 1
+ 20a:	0e 94 53 00 	call	0xa6	; 0xa6 <hex_decode>
+ 20e:	e4 cf       	rjmp	.-56     	; 0x1d8 <main+0x16>
+            } else {
+                asciibuf[ptr++] = c;
+            }
+        }
+
+        else if (state == PLAIN) {
+ 210:	12 30       	cpi	r17, 0x02	; 2
+ 212:	19 f7       	brne	.-58     	; 0x1da <main+0x18>
+            if ((c == '\n') || (c == '\r')) {
+ 214:	8a 30       	cpi	r24, 0x0A	; 10
+ 216:	11 f0       	breq	.+4      	; 0x21c <main+0x5a>
+ 218:	8d 30       	cpi	r24, 0x0D	; 13
+ 21a:	99 f5       	brne	.+102    	; 0x282 <main+0xc0>
+                asciibuf[ptr] = 0;
+ 21c:	fe 01       	movw	r30, r28
+ 21e:	e0 5e       	subi	r30, 0xE0	; 224
+ 220:	fe 4f       	sbci	r31, 0xFE	; 254
+ 222:	10 82       	st	Z, r1
+                hex_decode(asciibuf, ptr, pt);
+ 224:	40 e6       	ldi	r20, 0x60	; 96
+ 226:	51 e0       	ldi	r21, 0x01	; 1
+ 228:	be 01       	movw	r22, r28
+ 22a:	80 e2       	ldi	r24, 0x20	; 32
+ 22c:	91 e0       	ldi	r25, 0x01	; 1
+ 22e:	0e 94 53 00 	call	0xa6	; 0xa6 <hex_decode>
+
+                
+                /**********************************
+                 * Start user-specific code here. */
+                trigger_high();
+ 232:	40 9a       	sbi	0x08, 0	; 8
+ 234:	e0 e6       	ldi	r30, 0x60	; 96
+ 236:	f1 e0       	ldi	r31, 0x01	; 1
+                //back to computer. Can ignore of course if
+                //not needed
+
+                int len = ptr;
+
+                for (int i = 0; i < len; i++) {
+ 238:	03 c0       	rjmp	.+6      	; 0x240 <main+0x7e>
+                    pt[i]++;
+ 23a:	80 81       	ld	r24, Z
+ 23c:	8f 5f       	subi	r24, 0xFF	; 255
+ 23e:	81 93       	st	Z+, r24
+#define trigger_setup() DDRC |= 0x01
+#define trigger_high()  PORTC |= 0x01
+#define trigger_low()   PORTC &= ~(0x01)
+
+
+int main (void) {
+ 240:	cf 01       	movw	r24, r30
+ 242:	80 56       	subi	r24, 0x60	; 96
+ 244:	91 40       	sbci	r25, 0x01	; 1
+                //back to computer. Can ignore of course if
+                //not needed
+
+                int len = ptr;
+
+                for (int i = 0; i < len; i++) {
+ 246:	8c 17       	cp	r24, r28
+ 248:	9d 07       	cpc	r25, r29
+ 24a:	bc f3       	brlt	.-18     	; 0x23a <main+0x78>
+                    pt[i]++;
+                }
+
+                trigger_low();
+ 24c:	40 98       	cbi	0x08, 0	; 8
+                /* End user-specific code here. *
+                 ********************************/
+
+                /* Print Results */
+                hex_print(pt, KEY_LENGTH, asciibuf);
+ 24e:	40 e2       	ldi	r20, 0x20	; 32
+ 250:	51 e0       	ldi	r21, 0x01	; 1
+ 252:	60 e1       	ldi	r22, 0x10	; 16
+ 254:	70 e0       	ldi	r23, 0x00	; 0
+ 256:	80 e6       	ldi	r24, 0x60	; 96
+ 258:	91 e0       	ldi	r25, 0x01	; 1
+ 25a:	0e 94 7e 00 	call	0xfc	; 0xfc <hex_print>
+
+                output_ch_0('r');
+ 25e:	82 e7       	ldi	r24, 0x72	; 114
+ 260:	0e 94 da 00 	call	0x1b4	; 0x1b4 <output_ch_0>
+ 264:	00 e2       	ldi	r16, 0x20	; 32
+ 266:	11 e0       	ldi	r17, 0x01	; 1
+                for(int i = 0; i < KEY_LENGTH*2; i++){
+                    output_ch_0(asciibuf[i]);
+ 268:	f8 01       	movw	r30, r16
+ 26a:	81 91       	ld	r24, Z+
+ 26c:	8f 01       	movw	r16, r30
+ 26e:	0e 94 da 00 	call	0x1b4	; 0x1b4 <output_ch_0>
+
+                /* Print Results */
+                hex_print(pt, KEY_LENGTH, asciibuf);
+
+                output_ch_0('r');
+                for(int i = 0; i < KEY_LENGTH*2; i++){
+ 272:	f1 e0       	ldi	r31, 0x01	; 1
+ 274:	00 34       	cpi	r16, 0x40	; 64
+ 276:	1f 07       	cpc	r17, r31
+ 278:	b9 f7       	brne	.-18     	; 0x268 <main+0xa6>
+                    output_ch_0(asciibuf[i]);
+                }
+                output_ch_0('\n');
+ 27a:	8a e0       	ldi	r24, 0x0A	; 10
+ 27c:	0e 94 da 00 	call	0x1b4	; 0x1b4 <output_ch_0>
+ 280:	ab cf       	rjmp	.-170    	; 0x1d8 <main+0x16>
+
+                state = IDLE;
+            } else {
+                if (ptr >= BUFLEN){
+ 282:	c0 34       	cpi	r28, 0x40	; 64
+ 284:	d1 05       	cpc	r29, r1
+ 286:	0c f0       	brlt	.+2      	; 0x28a <main+0xc8>
+ 288:	a7 cf       	rjmp	.-178    	; 0x1d8 <main+0x16>
+                    state = IDLE;
+                } else {
+                    asciibuf[ptr++] = c;
+ 28a:	fe 01       	movw	r30, r28
+ 28c:	e0 5e       	subi	r30, 0xE0	; 224
+ 28e:	fe 4f       	sbci	r31, 0xFE	; 254
+ 290:	80 83       	st	Z, r24
+ 292:	21 96       	adiw	r28, 0x01	; 1
+ 294:	a2 cf       	rjmp	.-188    	; 0x1da <main+0x18>
+
+00000296 <_exit>:
+ 296:	f8 94       	cli
+
+00000298 <__stop_program>:
+ 298:	ff cf       	rjmp	.-2      	; 0x298 <__stop_program>

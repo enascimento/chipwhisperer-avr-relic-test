@@ -1,0 +1,624 @@
+   1               		.file	"serial_relic_test.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               	.global	hex_decode
+  11               	hex_decode:
+  12               	.LFB6:
+  13               		.file 1 "serial_relic_test.c"
+   1:serial_relic_test.c **** /*
+   2:serial_relic_test.c ****     This file is part of the ChipWhisperer Example Targets
+   3:serial_relic_test.c ****     Copyright (C) 2014 NewAE Technology Inc.
+   4:serial_relic_test.c **** 
+   5:serial_relic_test.c ****     This program is free software: you can redistribute it and/or modify
+   6:serial_relic_test.c ****     it under the terms of the GNU General Public License as published by
+   7:serial_relic_test.c ****     the Free Software Foundation, either version 3 of the License, or
+   8:serial_relic_test.c ****     (at your option) any later version.
+   9:serial_relic_test.c **** 
+  10:serial_relic_test.c ****     This program is distributed in the hope that it will be useful,
+  11:serial_relic_test.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  12:serial_relic_test.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  13:serial_relic_test.c ****     GNU General Public License for more details.
+  14:serial_relic_test.c **** 
+  15:serial_relic_test.c ****     You should have received a copy of the GNU General Public License
+  16:serial_relic_test.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  17:serial_relic_test.c **** */
+  18:serial_relic_test.c **** 
+  19:serial_relic_test.c **** #include <avr/io.h>
+  20:serial_relic_test.c **** #include <util/delay.h>
+  21:serial_relic_test.c **** #include <stdint.h>
+  22:serial_relic_test.c **** #include <stdlib.h>
+  23:serial_relic_test.c **** 
+  24:serial_relic_test.c **** #define __AVR_ATmega328P__
+  25:serial_relic_test.c **** 
+  26:serial_relic_test.c **** #include "uart.h"
+  27:serial_relic_test.c **** 
+  28:serial_relic_test.c **** #define IDLE 0
+  29:serial_relic_test.c **** #define KEY 1
+  30:serial_relic_test.c **** #define PLAIN 2
+  31:serial_relic_test.c **** 
+  32:serial_relic_test.c **** char hex_lookup[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', '
+  33:serial_relic_test.c **** 
+  34:serial_relic_test.c **** uint8_t* hex_decode(const char *in, int len,uint8_t *out)
+  35:serial_relic_test.c **** {
+  14               		.loc 1 35 0
+  15               	.LVL0:
+  16 0000 CF93      		push r28
+  17               	.LCFI0:
+  18 0002 DF93      		push r29
+  19               	.LCFI1:
+  20               	/* prologue: function */
+  21               	/* frame size = 0 */
+  22               	/* stack size = 2 */
+  23               	.L__stack_usage = 2
+  24               	.LVL1:
+  25 0004 FA01      		movw r30,r20
+  36:serial_relic_test.c ****     unsigned int i, t, hn, ln;
+  37:serial_relic_test.c **** 
+  38:serial_relic_test.c ****     for (t = 0,i = 0; i < len; i+=2,++t) {
+  26               		.loc 1 38 0
+  27 0006 20E0      		ldi r18,0
+  28 0008 30E0      		ldi r19,0
+  29 000a 00C0      		rjmp .L2
+  30               	.LVL2:
+  31               	.L7:
+  34:serial_relic_test.c **** uint8_t* hex_decode(const char *in, int len,uint8_t *out)
+  32               		.loc 1 34 0
+  33 000c DC01      		movw r26,r24
+  34 000e A20F      		add r26,r18
+  35 0010 B31F      		adc r27,r19
+  39:serial_relic_test.c **** 
+  40:serial_relic_test.c ****         hn = in[i] > '9' ? (in[i]|32) - 'a' + 10 : in[i] - '0';
+  36               		.loc 1 40 0
+  37 0012 CC91      		ld r28,X
+  38 0014 CA33      		cpi r28,lo8(58)
+  39 0016 00F0      		brlo .L3
+  40               		.loc 1 40 0 is_stmt 0 discriminator 1
+  41 0018 C062      		ori r28,lo8(32)
+  42 001a D0E0      		ldi r29,0
+  43 001c C755      		subi r28,87
+  44 001e D109      		sbc r29,__zero_reg__
+  45 0020 00C0      		rjmp .L4
+  46               	.L3:
+  47               		.loc 1 40 0 discriminator 2
+  48 0022 D0E0      		ldi r29,0
+  49 0024 E097      		sbiw r28,48
+  50               	.L4:
+  41:serial_relic_test.c ****         ln = in[i+1] > '9' ? (in[i+1]|32) - 'a' + 10 : in[i+1] - '0';
+  51               		.loc 1 41 0 is_stmt 1 discriminator 3
+  52 0026 1196      		adiw r26,1
+  53 0028 AC91      		ld r26,X
+  54 002a AA33      		cpi r26,lo8(58)
+  55 002c 00F0      		brlo .L5
+  56               		.loc 1 41 0 is_stmt 0 discriminator 1
+  57 002e A062      		ori r26,lo8(32)
+  58 0030 B0E0      		ldi r27,0
+  59 0032 A755      		subi r26,87
+  60 0034 B109      		sbc r27,__zero_reg__
+  61 0036 00C0      		rjmp .L6
+  62               	.L5:
+  63               		.loc 1 41 0 discriminator 2
+  64 0038 B0E0      		ldi r27,0
+  65 003a D097      		sbiw r26,48
+  66               	.L6:
+  42:serial_relic_test.c ****         out[t] = (hn << 4 ) | ln;
+  67               		.loc 1 42 0 is_stmt 1 discriminator 3
+  68 003c C295      		swap r28
+  69 003e C07F      		andi r28,lo8(-16)
+  70 0040 CA2B      		or r28,r26
+  71 0042 C193      		st Z+,r28
+  38:serial_relic_test.c ****     for (t = 0,i = 0; i < len; i+=2,++t) {
+  72               		.loc 1 38 0 discriminator 3
+  73 0044 2E5F      		subi r18,-2
+  74 0046 3F4F      		sbci r19,-1
+  75               	.LVL3:
+  76               	.L2:
+  38:serial_relic_test.c ****     for (t = 0,i = 0; i < len; i+=2,++t) {
+  77               		.loc 1 38 0 is_stmt 0 discriminator 1
+  78 0048 2617      		cp r18,r22
+  79 004a 3707      		cpc r19,r23
+  80 004c 00F0      		brlo .L7
+  43:serial_relic_test.c ****     }
+  44:serial_relic_test.c **** 
+  45:serial_relic_test.c ****     return out;
+  46:serial_relic_test.c **** }
+  81               		.loc 1 46 0 is_stmt 1
+  82 004e CA01      		movw r24,r20
+  83               	.LVL4:
+  84               	/* epilogue start */
+  85 0050 DF91      		pop r29
+  86 0052 CF91      		pop r28
+  87 0054 0895      		ret
+  88               	.LFE6:
+  90               	.global	hex_print
+  92               	hex_print:
+  93               	.LFB7:
+  47:serial_relic_test.c **** 
+  48:serial_relic_test.c **** void hex_print(const uint8_t * in, int len, char *out)
+  49:serial_relic_test.c **** {
+  94               		.loc 1 49 0
+  95               	.LVL5:
+  96 0056 1F93      		push r17
+  97               	.LCFI2:
+  98 0058 CF93      		push r28
+  99               	.LCFI3:
+ 100 005a DF93      		push r29
+ 101               	.LCFI4:
+ 102               	/* prologue: function */
+ 103               	/* frame size = 0 */
+ 104               	/* stack size = 3 */
+ 105               	.L__stack_usage = 3
+ 106               	.LVL6:
+ 107 005c FC01      		movw r30,r24
+  48:serial_relic_test.c **** void hex_print(const uint8_t * in, int len, char *out)
+ 108               		.loc 1 48 0
+ 109 005e DA01      		movw r26,r20
+ 110 0060 1196      		adiw r26,1
+ 111 0062 9B01      		movw r18,r22
+  50:serial_relic_test.c ****     unsigned int i,j;
+  51:serial_relic_test.c ****     j=0;
+  52:serial_relic_test.c ****     for (i=0; i < len; i++) {
+ 112               		.loc 1 52 0
+ 113 0064 80E0      		ldi r24,0
+ 114 0066 90E0      		ldi r25,0
+ 115               	.LVL7:
+ 116 0068 00C0      		rjmp .L9
+ 117               	.LVL8:
+ 118               	.L10:
+  48:serial_relic_test.c **** void hex_print(const uint8_t * in, int len, char *out)
+ 119               		.loc 1 48 0 discriminator 2
+ 120 006a BF01      		movw r22,r30
+  53:serial_relic_test.c ****         out[j++] = hex_lookup[in[i] >> 4];
+ 121               		.loc 1 53 0 discriminator 2
+ 122 006c C191      		ld r28,Z+
+ 123 006e C295      		swap r28
+ 124 0070 CF70      		andi r28,lo8(15)
+ 125 0072 D0E0      		ldi r29,0
+ 126 0074 C050      		subi r28,lo8(-(hex_lookup))
+ 127 0076 D040      		sbci r29,hi8(-(hex_lookup))
+ 128 0078 1881      		ld r17,Y
+  48:serial_relic_test.c **** void hex_print(const uint8_t * in, int len, char *out)
+ 129               		.loc 1 48 0 discriminator 2
+ 130 007a ED01      		movw r28,r26
+ 131 007c 2197      		sbiw r28,1
+ 132               		.loc 1 53 0 discriminator 2
+ 133 007e 1883      		st Y,r17
+  54:serial_relic_test.c ****         out[j++] = hex_lookup[in[i] & 0x0F];
+ 134               		.loc 1 54 0 discriminator 2
+ 135 0080 EB01      		movw r28,r22
+ 136 0082 6881      		ld r22,Y
+ 137 0084 6F70      		andi r22,lo8(15)
+ 138 0086 C62F      		mov r28,r22
+ 139 0088 D0E0      		ldi r29,0
+ 140 008a C050      		subi r28,lo8(-(hex_lookup))
+ 141 008c D040      		sbci r29,hi8(-(hex_lookup))
+ 142 008e 6881      		ld r22,Y
+ 143 0090 6C93      		st X,r22
+  52:serial_relic_test.c ****     for (i=0; i < len; i++) {
+ 144               		.loc 1 52 0 discriminator 2
+ 145 0092 0196      		adiw r24,1
+ 146               	.LVL9:
+ 147 0094 1296      		adiw r26,2
+ 148               	.LVL10:
+ 149               	.L9:
+  52:serial_relic_test.c ****     for (i=0; i < len; i++) {
+ 150               		.loc 1 52 0 is_stmt 0 discriminator 1
+ 151 0096 8217      		cp r24,r18
+ 152 0098 9307      		cpc r25,r19
+ 153 009a 01F4      		brne .L10
+  55:serial_relic_test.c ****     }
+  56:serial_relic_test.c **** 
+  57:serial_relic_test.c ****     out[j] = 0;
+ 154               		.loc 1 57 0 is_stmt 1
+ 155 009c FC01      		movw r30,r24
+ 156 009e EE0F      		lsl r30
+ 157 00a0 FF1F      		rol r31
+ 158               	.LVL11:
+ 159 00a2 E40F      		add r30,r20
+ 160 00a4 F51F      		adc r31,r21
+ 161 00a6 1082      		st Z,__zero_reg__
+ 162               	/* epilogue start */
+  58:serial_relic_test.c **** }
+ 163               		.loc 1 58 0
+ 164 00a8 DF91      		pop r29
+ 165 00aa CF91      		pop r28
+ 166 00ac 1F91      		pop r17
+ 167 00ae 0895      		ret
+ 168               	.LFE7:
+ 170               		.section	.text.startup,"ax",@progbits
+ 171               	.global	main
+ 173               	main:
+ 174               	.LFB8:
+  59:serial_relic_test.c **** 
+  60:serial_relic_test.c **** #define KEY_LENGTH 16
+  61:serial_relic_test.c **** #define BUFLEN (KEY_LENGTH*4)
+  62:serial_relic_test.c **** 
+  63:serial_relic_test.c **** //Buffers for decoding
+  64:serial_relic_test.c **** char asciibuf[BUFLEN];
+  65:serial_relic_test.c **** uint8_t pt[KEY_LENGTH];
+  66:serial_relic_test.c **** uint8_t tmp[KEY_LENGTH];
+  67:serial_relic_test.c **** 
+  68:serial_relic_test.c **** 
+  69:serial_relic_test.c **** //We want to use the AVR ADC-pins, since they have a seperate power rail
+  70:serial_relic_test.c **** #define trigger_setup() DDRC |= 0x01
+  71:serial_relic_test.c **** #define trigger_high()  PORTC |= 0x01
+  72:serial_relic_test.c **** #define trigger_low()   PORTC &= ~(0x01)
+  73:serial_relic_test.c **** 
+  74:serial_relic_test.c **** 
+  75:serial_relic_test.c **** int main (void) {
+ 175               		.loc 1 75 0
+ 176               	/* prologue: function */
+ 177               	/* frame size = 0 */
+ 178               	/* stack size = 0 */
+ 179               	.L__stack_usage = 0
+  76:serial_relic_test.c ****     init_uart0();
+ 180               		.loc 1 76 0
+ 181 0000 0E94 0000 		call init_uart0
+ 182               	.LVL12:
+  77:serial_relic_test.c **** 
+  78:serial_relic_test.c ****     /* For 2 MHz crystal use this hack */
+  79:serial_relic_test.c ****     //BAUD0L_REG = 12;
+  80:serial_relic_test.c **** 
+  81:serial_relic_test.c ****     trigger_setup();
+ 183               		.loc 1 81 0
+ 184 0004 389A      		sbi 0x7,0
+ 185               	.LVL13:
+ 186               	.L22:
+  82:serial_relic_test.c **** 
+  83:serial_relic_test.c ****     /* Uncomment this to get a HELLO message for debug */
+  84:serial_relic_test.c ****     /*
+  85:serial_relic_test.c ****     output_ch_0('h');
+  86:serial_relic_test.c ****     output_ch_0('e');
+  87:serial_relic_test.c ****     output_ch_0('l');
+  88:serial_relic_test.c ****     output_ch_0('l');
+  89:serial_relic_test.c ****     output_ch_0('o');
+  90:serial_relic_test.c ****     output_ch_0('\n');
+  91:serial_relic_test.c ****     */
+  92:serial_relic_test.c **** 
+  93:serial_relic_test.c ****     /* Super-Crappy Protocol works like this:
+  94:serial_relic_test.c **** 
+  95:serial_relic_test.c ****     Send kKEY
+  96:serial_relic_test.c ****     Send pPLAINTEXT
+  97:serial_relic_test.c ****     *** Encryption Occurs ***
+  98:serial_relic_test.c ****     receive rRESPONSE
+  99:serial_relic_test.c **** 
+ 100:serial_relic_test.c ****     e.g.:
+ 101:serial_relic_test.c **** 
+ 102:serial_relic_test.c ****     kE8E9EAEBEDEEEFF0F2F3F4F5F7F8F9FA\n
+ 103:serial_relic_test.c ****     p014BAF2278A69D331D5180103643E99A\n
+ 104:serial_relic_test.c ****     r6743C3D1519AB4F2CD9A78AB09A511BD\n
+ 105:serial_relic_test.c ****     */
+ 106:serial_relic_test.c **** 
+ 107:serial_relic_test.c ****     char c;
+ 108:serial_relic_test.c ****     int ptr = 0;
+ 109:serial_relic_test.c ****     
+ 110:serial_relic_test.c ****     char state = 0;
+ 111:serial_relic_test.c **** 
+ 112:serial_relic_test.c **** #ifdef VARYING_CLOCK
+ 113:serial_relic_test.c ****     uint8_t newosc;
+ 114:serial_relic_test.c **** #endif
+ 115:serial_relic_test.c **** 
+ 116:serial_relic_test.c ****     while(1){
+ 117:serial_relic_test.c **** 
+ 118:serial_relic_test.c ****         c = input_ch_0();
+ 119:serial_relic_test.c **** 
+ 120:serial_relic_test.c ****         if (c == 'x') {
+ 121:serial_relic_test.c ****             ptr = 0;
+ 122:serial_relic_test.c ****             state = IDLE;
+ 187               		.loc 1 122 0
+ 188 0006 10E0      		ldi r17,0
+ 189 0008 00C0      		rjmp .L37
+ 190               	.LVL14:
+ 191               	.L23:
+ 123:serial_relic_test.c ****             continue;
+ 124:serial_relic_test.c ****         }
+ 125:serial_relic_test.c **** 
+ 126:serial_relic_test.c ****         if (c == 'k') {
+ 127:serial_relic_test.c ****             ptr = 0;
+ 128:serial_relic_test.c ****             state = KEY;
+ 192               		.loc 1 128 0
+ 193 000a 11E0      		ldi r17,lo8(1)
+ 194               	.LVL15:
+ 195 000c 00C0      		rjmp .L37
+ 196               	.LVL16:
+ 197               	.L24:
+ 129:serial_relic_test.c ****             continue;
+ 130:serial_relic_test.c ****         }
+ 131:serial_relic_test.c **** 
+ 132:serial_relic_test.c ****         else if (c == 'p') {
+ 133:serial_relic_test.c ****             ptr = 0;
+ 134:serial_relic_test.c ****             state = PLAIN;
+ 198               		.loc 1 134 0
+ 199 000e 12E0      		ldi r17,lo8(2)
+ 200               	.LVL17:
+ 201               	.L37:
+ 133:serial_relic_test.c ****             ptr = 0;
+ 202               		.loc 1 133 0
+ 203 0010 C0E0      		ldi r28,0
+ 204 0012 D0E0      		ldi r29,0
+ 205 0014 00C0      		rjmp .L35
+ 206               	.LVL18:
+ 207               	.L25:
+ 135:serial_relic_test.c ****             continue;
+ 136:serial_relic_test.c ****         }
+ 137:serial_relic_test.c **** 
+ 138:serial_relic_test.c **** 
+ 139:serial_relic_test.c ****         else if (state == KEY) {
+ 140:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 141:serial_relic_test.c ****                 asciibuf[ptr] = 0;
+ 142:serial_relic_test.c ****                 hex_decode(asciibuf, ptr, tmp);
+ 143:serial_relic_test.c **** 
+ 144:serial_relic_test.c ****                 //If you want to use 'key' for something do so here
+ 145:serial_relic_test.c ****                 //Decoded value held in 'tmp' register
+ 146:serial_relic_test.c ****                 
+ 147:serial_relic_test.c ****                 state = IDLE;
+ 148:serial_relic_test.c ****             } else {
+ 149:serial_relic_test.c ****                 asciibuf[ptr++] = c;
+ 150:serial_relic_test.c ****             }
+ 151:serial_relic_test.c ****         }
+ 152:serial_relic_test.c **** 
+ 153:serial_relic_test.c ****         else if (state == PLAIN) {
+ 154:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 155:serial_relic_test.c ****                 asciibuf[ptr] = 0;
+ 156:serial_relic_test.c ****                 hex_decode(asciibuf, ptr, pt);
+ 157:serial_relic_test.c **** 
+ 158:serial_relic_test.c ****                 
+ 159:serial_relic_test.c ****                 /**********************************
+ 160:serial_relic_test.c ****                  * Start user-specific code here. */
+ 161:serial_relic_test.c ****                 trigger_high();
+ 162:serial_relic_test.c ****                 
+ 163:serial_relic_test.c ****                 //16 hex bytes held in 'pt' were sent
+ 164:serial_relic_test.c ****                 //from the computer. Store your response
+ 165:serial_relic_test.c ****                 //back into 'pt', which will send 16 bytes
+ 166:serial_relic_test.c ****                 //back to computer. Can ignore of course if
+ 167:serial_relic_test.c ****                 //not needed
+ 168:serial_relic_test.c **** 
+ 169:serial_relic_test.c ****                 int len = ptr;
+ 170:serial_relic_test.c **** 
+ 171:serial_relic_test.c ****                 for (int i = 0; i < len; i++) {
+ 172:serial_relic_test.c ****                     pt[i]++;
+ 173:serial_relic_test.c ****                 }
+ 174:serial_relic_test.c **** 
+ 175:serial_relic_test.c ****                 trigger_low();
+ 176:serial_relic_test.c ****                 /* End user-specific code here. *
+ 177:serial_relic_test.c ****                  ********************************/
+ 178:serial_relic_test.c **** 
+ 179:serial_relic_test.c ****                 /* Print Results */
+ 180:serial_relic_test.c ****                 hex_print(pt, KEY_LENGTH, asciibuf);
+ 181:serial_relic_test.c **** 
+ 182:serial_relic_test.c ****                 output_ch_0('r');
+ 183:serial_relic_test.c ****                 for(int i = 0; i < KEY_LENGTH*2; i++){
+ 184:serial_relic_test.c ****                     output_ch_0(asciibuf[i]);
+ 185:serial_relic_test.c ****                 }
+ 186:serial_relic_test.c ****                 output_ch_0('\n');
+ 187:serial_relic_test.c **** 
+ 188:serial_relic_test.c ****                 state = IDLE;
+ 189:serial_relic_test.c ****             } else {
+ 190:serial_relic_test.c ****                 if (ptr >= BUFLEN){
+ 191:serial_relic_test.c ****                     state = IDLE;
+ 208               		.loc 1 191 0
+ 209 0016 10E0      		ldi r17,0
+ 210               	.LVL19:
+ 211               	.L35:
+ 118:serial_relic_test.c ****         c = input_ch_0();
+ 212               		.loc 1 118 0
+ 213 0018 0E94 0000 		call input_ch_0
+ 214               	.LVL20:
+ 120:serial_relic_test.c ****         if (c == 'x') {
+ 215               		.loc 1 120 0
+ 216 001c 8837      		cpi r24,lo8(120)
+ 217 001e 01F0      		breq .L22
+ 126:serial_relic_test.c ****         if (c == 'k') {
+ 218               		.loc 1 126 0
+ 219 0020 8B36      		cpi r24,lo8(107)
+ 220 0022 01F0      		breq .L23
+ 132:serial_relic_test.c ****         else if (c == 'p') {
+ 221               		.loc 1 132 0
+ 222 0024 8037      		cpi r24,lo8(112)
+ 223 0026 01F0      		breq .L24
+ 139:serial_relic_test.c ****         else if (state == KEY) {
+ 224               		.loc 1 139 0
+ 225 0028 1130      		cpi r17,lo8(1)
+ 226 002a 01F4      		brne .L14
+ 227 002c FE01      		movw r30,r28
+ 228 002e E050      		subi r30,lo8(-(asciibuf))
+ 229 0030 F040      		sbci r31,hi8(-(asciibuf))
+ 140:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 230               		.loc 1 140 0
+ 231 0032 8A30      		cpi r24,lo8(10)
+ 232 0034 01F0      		breq .L15
+ 140:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 233               		.loc 1 140 0 is_stmt 0 discriminator 1
+ 234 0036 8D30      		cpi r24,lo8(13)
+ 235 0038 01F0      		breq .+2
+ 236 003a 00C0      		rjmp .L36
+ 237               	.L15:
+ 141:serial_relic_test.c ****                 asciibuf[ptr] = 0;
+ 238               		.loc 1 141 0 is_stmt 1
+ 239 003c 1082      		st Z,__zero_reg__
+ 142:serial_relic_test.c ****                 hex_decode(asciibuf, ptr, tmp);
+ 240               		.loc 1 142 0
+ 241 003e 40E0      		ldi r20,lo8(tmp)
+ 242 0040 50E0      		ldi r21,hi8(tmp)
+ 243 0042 BE01      		movw r22,r28
+ 244 0044 80E0      		ldi r24,lo8(asciibuf)
+ 245 0046 90E0      		ldi r25,hi8(asciibuf)
+ 246               	.LVL21:
+ 247 0048 0E94 0000 		call hex_decode
+ 248               	.LVL22:
+ 249 004c 00C0      		rjmp .L25
+ 250               	.LVL23:
+ 251               	.L14:
+ 153:serial_relic_test.c ****         else if (state == PLAIN) {
+ 252               		.loc 1 153 0
+ 253 004e 1230      		cpi r17,lo8(2)
+ 254 0050 01F4      		brne .L35
+ 154:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 255               		.loc 1 154 0
+ 256 0052 8A30      		cpi r24,lo8(10)
+ 257 0054 01F0      		breq .L17
+ 154:serial_relic_test.c ****             if ((c == '\n') || (c == '\r')) {
+ 258               		.loc 1 154 0 is_stmt 0 discriminator 1
+ 259 0056 8D30      		cpi r24,lo8(13)
+ 260 0058 01F4      		brne .L18
+ 261               	.L17:
+ 262               	.LBB2:
+ 155:serial_relic_test.c ****                 asciibuf[ptr] = 0;
+ 263               		.loc 1 155 0 is_stmt 1
+ 264 005a FE01      		movw r30,r28
+ 265 005c E050      		subi r30,lo8(-(asciibuf))
+ 266 005e F040      		sbci r31,hi8(-(asciibuf))
+ 267 0060 1082      		st Z,__zero_reg__
+ 156:serial_relic_test.c ****                 hex_decode(asciibuf, ptr, pt);
+ 268               		.loc 1 156 0
+ 269 0062 40E0      		ldi r20,lo8(pt)
+ 270 0064 50E0      		ldi r21,hi8(pt)
+ 271 0066 BE01      		movw r22,r28
+ 272 0068 80E0      		ldi r24,lo8(asciibuf)
+ 273 006a 90E0      		ldi r25,hi8(asciibuf)
+ 274               	.LVL24:
+ 275 006c 0E94 0000 		call hex_decode
+ 276               	.LVL25:
+ 161:serial_relic_test.c ****                 trigger_high();
+ 277               		.loc 1 161 0
+ 278 0070 409A      		sbi 0x8,0
+ 279               	.LVL26:
+ 280 0072 E0E0      		ldi r30,lo8(pt)
+ 281 0074 F0E0      		ldi r31,hi8(pt)
+ 282               	.LBB3:
+ 171:serial_relic_test.c ****                 for (int i = 0; i < len; i++) {
+ 283               		.loc 1 171 0
+ 284 0076 00C0      		rjmp .L19
+ 285               	.LVL27:
+ 286               	.L20:
+ 172:serial_relic_test.c ****                     pt[i]++;
+ 287               		.loc 1 172 0 discriminator 2
+ 288 0078 8081      		ld r24,Z
+ 289 007a 8F5F      		subi r24,lo8(-(1))
+ 290 007c 8193      		st Z+,r24
+ 291               	.L19:
+  75:serial_relic_test.c **** int main (void) {
+ 292               		.loc 1 75 0 discriminator 1
+ 293 007e CF01      		movw r24,r30
+ 294 0080 8050      		subi r24,lo8(pt)
+ 295 0082 9040      		sbci r25,hi8(pt)
+ 171:serial_relic_test.c ****                 for (int i = 0; i < len; i++) {
+ 296               		.loc 1 171 0 discriminator 1
+ 297 0084 8C17      		cp r24,r28
+ 298 0086 9D07      		cpc r25,r29
+ 299 0088 04F0      		brlt .L20
+ 300               	.LBE3:
+ 175:serial_relic_test.c ****                 trigger_low();
+ 301               		.loc 1 175 0
+ 302 008a 4098      		cbi 0x8,0
+ 180:serial_relic_test.c ****                 hex_print(pt, KEY_LENGTH, asciibuf);
+ 303               		.loc 1 180 0
+ 304 008c 40E0      		ldi r20,lo8(asciibuf)
+ 305 008e 50E0      		ldi r21,hi8(asciibuf)
+ 306 0090 60E1      		ldi r22,lo8(16)
+ 307 0092 70E0      		ldi r23,0
+ 308 0094 80E0      		ldi r24,lo8(pt)
+ 309 0096 90E0      		ldi r25,hi8(pt)
+ 310 0098 0E94 0000 		call hex_print
+ 311               	.LVL28:
+ 182:serial_relic_test.c ****                 output_ch_0('r');
+ 312               		.loc 1 182 0
+ 313 009c 82E7      		ldi r24,lo8(114)
+ 314 009e 0E94 0000 		call output_ch_0
+ 315               	.LVL29:
+ 316 00a2 00E0      		ldi r16,lo8(asciibuf)
+ 317 00a4 10E0      		ldi r17,hi8(asciibuf)
+ 318               	.LVL30:
+ 319               	.L21:
+ 320               	.LBB4:
+ 184:serial_relic_test.c ****                     output_ch_0(asciibuf[i]);
+ 321               		.loc 1 184 0 discriminator 2
+ 322 00a6 F801      		movw r30,r16
+ 323 00a8 8191      		ld r24,Z+
+ 324 00aa 8F01      		movw r16,r30
+ 325 00ac 0E94 0000 		call output_ch_0
+ 326               	.LVL31:
+ 183:serial_relic_test.c ****                 for(int i = 0; i < KEY_LENGTH*2; i++){
+ 327               		.loc 1 183 0 discriminator 2
+ 328 00b0 F0E0      		ldi r31,hi8(asciibuf+32)
+ 329 00b2 0030      		cpi r16,lo8(asciibuf+32)
+ 330 00b4 1F07      		cpc r17,r31
+ 331 00b6 01F4      		brne .L21
+ 332               	.LBE4:
+ 186:serial_relic_test.c ****                 output_ch_0('\n');
+ 333               		.loc 1 186 0
+ 334 00b8 8AE0      		ldi r24,lo8(10)
+ 335 00ba 0E94 0000 		call output_ch_0
+ 336               	.LVL32:
+ 337 00be 00C0      		rjmp .L25
+ 338               	.LVL33:
+ 339               	.L18:
+ 340               	.LBE2:
+ 190:serial_relic_test.c ****                 if (ptr >= BUFLEN){
+ 341               		.loc 1 190 0
+ 342 00c0 C034      		cpi r28,64
+ 343 00c2 D105      		cpc r29,__zero_reg__
+ 344 00c4 04F0      		brlt .+2
+ 345 00c6 00C0      		rjmp .L25
+ 192:serial_relic_test.c ****                 } else {
+ 193:serial_relic_test.c ****                     asciibuf[ptr++] = c;
+ 346               		.loc 1 193 0
+ 347 00c8 FE01      		movw r30,r28
+ 348 00ca E050      		subi r30,lo8(-(asciibuf))
+ 349 00cc F040      		sbci r31,hi8(-(asciibuf))
+ 350               	.L36:
+ 351 00ce 8083      		st Z,r24
+ 352 00d0 2196      		adiw r28,1
+ 353               	.LVL34:
+ 354 00d2 00C0      		rjmp .L35
+ 355               	.LFE8:
+ 357               		.comm	tmp,16,1
+ 358               		.comm	pt,16,1
+ 359               		.comm	asciibuf,64,1
+ 360               	.global	hex_lookup
+ 361               		.data
+ 364               	hex_lookup:
+ 365 0000 30        		.byte	48
+ 366 0001 31        		.byte	49
+ 367 0002 32        		.byte	50
+ 368 0003 33        		.byte	51
+ 369 0004 34        		.byte	52
+ 370 0005 35        		.byte	53
+ 371 0006 36        		.byte	54
+ 372 0007 37        		.byte	55
+ 373 0008 38        		.byte	56
+ 374 0009 39        		.byte	57
+ 375 000a 41        		.byte	65
+ 376 000b 42        		.byte	66
+ 377 000c 43        		.byte	67
+ 378 000d 44        		.byte	68
+ 379 000e 45        		.byte	69
+ 380 000f 46        		.byte	70
+ 453               	.Letext0:
+ 454               		.file 2 "/usr/lib/gcc/avr/4.7.2/../../../avr/include/stdint.h"
+ 455               		.file 3 "uart.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 serial_relic_test.c
+     /tmp/cccBbgqo.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cccBbgqo.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cccBbgqo.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cccBbgqo.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cccBbgqo.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cccBbgqo.s:11     .text:0000000000000000 hex_decode
+     /tmp/cccBbgqo.s:92     .text:0000000000000056 hex_print
+     /tmp/cccBbgqo.s:364    .data:0000000000000000 hex_lookup
+     /tmp/cccBbgqo.s:173    .text.startup:0000000000000000 main
+                            *COM*:0000000000000040 asciibuf
+                            *COM*:0000000000000010 tmp
+                            *COM*:0000000000000010 pt
+
+UNDEFINED SYMBOLS
+init_uart0
+input_ch_0
+output_ch_0
+__do_copy_data
+__do_clear_bss

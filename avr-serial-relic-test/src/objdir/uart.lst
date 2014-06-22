@@ -1,0 +1,222 @@
+   1               		.file	"uart.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               	.global	init_uart0
+  11               	init_uart0:
+  12               	.LFB0:
+  13               		.file 1 "uart.c"
+   1:uart.c        **** /* Simple routine to use the hardware UART. Designed to NOT use interrupts,
+   2:uart.c        **** this code is extreamly portable, and also extreamly simple.
+   3:uart.c        **** 
+   4:uart.c        **** Created by: Colin O'Flynn
+   5:uart.c        **** Contact: c_oflynn@yahoo.com or coflynn@newae.com or username c_oflynn on
+   6:uart.c        **** www.avrfreaks.net
+   7:uart.c        **** 
+   8:uart.c        **** These routines are released free of restrictions, but if anything bad happens
+   9:uart.c        **** (including but not limited to loss of your time, loss of profit, loss of life,
+  10:uart.c        **** injury, loss of money, loss of your dog) it is your OWN fault, NO ONE else
+  11:uart.c        **** can be held responsible*/
+  12:uart.c        **** 
+  13:uart.c        **** #include <avr/io.h>
+  14:uart.c        **** #include "uart.h"
+  15:uart.c        **** 
+  16:uart.c        **** #define BAUD_RATE0_REG  (unsigned int)(CPU_CLK_SPEED / (16 * BAUD_RATE0) ) - 1
+  17:uart.c        **** //Actual baud rate, can be used to calculate error
+  18:uart.c        **** #define ACTUAL_BAUD0    (unsigned int)(CPU_CLK_SPEED / (16 * BAUD_RATE0_REG + 1)
+  19:uart.c        **** 
+  20:uart.c        **** #define BAUD_RATE1_REG  (unsigned int)(CPU_CLK_SPEED / (16 * BAUD_RATE1) ) - 1
+  21:uart.c        **** //Actual baud rate, can be used to calculate error
+  22:uart.c        **** #define ACTUAL_BAUD1    (unsigned int)(CPU_CLK_SPEED / (16 * BAUD_RATE1_REG + 1)
+  23:uart.c        **** 
+  24:uart.c        **** 
+  25:uart.c        **** /*if you want to be able to change the baud rate "on the fly", just add in some
+  26:uart.c        **** code that calculates the proper baud rate register settings. The calculations
+  27:uart.c        **** are used above with #define BAUD_RATE0_REG. However, if you want to change
+  28:uart.c        **** baud rates BUT will only need a few, it would be easier to pre-calculate
+  29:uart.c        **** the baud register settings in pre-processor, and use a switch statement that
+  30:uart.c        **** lets you select between a few baud rates*/
+  31:uart.c        **** 
+  32:uart.c        **** void init_uart0(void)
+  33:uart.c        **** {
+  14               		.loc 1 33 0
+  15               	/* prologue: function */
+  16               	/* frame size = 0 */
+  17               	/* stack size = 0 */
+  18               	.L__stack_usage = 0
+  34:uart.c        ****     //turn on TX and RX
+  35:uart.c        ****     RXTXEN0_REG = (1<<RX0EN) | (1<<TX0EN);
+  19               		.loc 1 35 0
+  20 0000 88E1      		ldi r24,lo8(24)
+  21 0002 8093 C100 		sts 193,r24
+  36:uart.c        **** 
+  37:uart.c        ****     //set up baud rate
+  38:uart.c        **** #if (BAUDREGS == 2)
+  39:uart.c        ****     BAUD0H_REG = (unsigned char)(BAUD_RATE0_REG >> 8);
+  40:uart.c        ****     BAUD0L_REG = (unsigned char)BAUD_RATE0_REG;
+  41:uart.c        **** #else
+  42:uart.c        ****     BAUD0L_REG = (unsigned char)BAUD_RATE0_REG;
+  22               		.loc 1 42 0
+  23 0006 8BE0      		ldi r24,lo8(11)
+  24 0008 8093 C400 		sts 196,r24
+  25 000c 0895      		ret
+  26               	.LFE0:
+  28               	.global	input_ch_w_timeout_0
+  30               	input_ch_w_timeout_0:
+  31               	.LFB1:
+  43:uart.c        **** #endif
+  44:uart.c        ****     return;
+  45:uart.c        **** }
+  46:uart.c        **** 
+  47:uart.c        **** unsigned char input_ch_w_timeout_0(char *data, volatile unsigned int timeout) {
+  32               		.loc 1 47 0
+  33               	.LVL0:
+  34 000e CF93      		push r28
+  35               	.LCFI0:
+  36 0010 DF93      		push r29
+  37               	.LCFI1:
+  38 0012 00D0      		rcall .
+  39               	.LCFI2:
+  40 0014 CDB7      		in r28,__SP_L__
+  41 0016 DEB7      		in r29,__SP_H__
+  42               	.LCFI3:
+  43               	/* prologue: function */
+  44               	/* frame size = 2 */
+  45               	/* stack size = 4 */
+  46               	.L__stack_usage = 4
+  47 0018 7A83      		std Y+2,r23
+  48 001a 6983      		std Y+1,r22
+  49               	.LVL1:
+  48:uart.c        ****     unsigned int timeout_counter = 0;
+  50               		.loc 1 48 0
+  51 001c 20E0      		ldi r18,0
+  52 001e 30E0      		ldi r19,0
+  49:uart.c        **** 
+  50:uart.c        ****     //check if a byte has been received or if the timeout has been excedded
+  51:uart.c        ****     while (timeout_counter != timeout)
+  53               		.loc 1 51 0
+  54 0020 00C0      		rjmp .L3
+  55               	.LVL2:
+  56               	.L6:
+  52:uart.c        ****     {
+  53:uart.c        ****         if ((STAT0RXTX_REG & (1<<RX0C)) == (1<<RX0C))
+  57               		.loc 1 53 0
+  58 0022 4091 C000 		lds r20,192
+  59 0026 47FF      		sbrs r20,7
+  60 0028 00C0      		rjmp .L4
+  54:uart.c        ****         {
+  55:uart.c        ****             *data = UDR0;
+  61               		.loc 1 55 0
+  62 002a 2091 C600 		lds r18,198
+  63               	.LVL3:
+  64 002e FC01      		movw r30,r24
+  65 0030 2083      		st Z,r18
+  56:uart.c        ****             return BYTE_REC;
+  66               		.loc 1 56 0
+  67 0032 80E0      		ldi r24,0
+  68               	.LVL4:
+  69 0034 00C0      		rjmp .L5
+  70               	.LVL5:
+  71               	.L4:
+  57:uart.c        ****         }
+  58:uart.c        ****         timeout_counter++;
+  72               		.loc 1 58 0
+  73 0036 2F5F      		subi r18,-1
+  74 0038 3F4F      		sbci r19,-1
+  75               	.LVL6:
+  76               	.L3:
+  51:uart.c        ****     while (timeout_counter != timeout)
+  77               		.loc 1 51 0 discriminator 1
+  78 003a 4981      		ldd r20,Y+1
+  79 003c 5A81      		ldd r21,Y+2
+  80 003e 2417      		cp r18,r20
+  81 0040 3507      		cpc r19,r21
+  82 0042 01F4      		brne .L6
+  59:uart.c        ****     }
+  60:uart.c        **** 
+  61:uart.c        ****     return TIMEOUT;
+  83               		.loc 1 61 0
+  84 0044 81E0      		ldi r24,lo8(1)
+  85               	.LVL7:
+  86               	.L5:
+  87               	/* epilogue start */
+  62:uart.c        **** }
+  88               		.loc 1 62 0
+  89 0046 0F90      		pop __tmp_reg__
+  90 0048 0F90      		pop __tmp_reg__
+  91 004a DF91      		pop r29
+  92 004c CF91      		pop r28
+  93 004e 0895      		ret
+  94               	.LFE1:
+  96               	.global	input_ch_0
+  98               	input_ch_0:
+  99               	.LFB2:
+  63:uart.c        **** 
+  64:uart.c        **** char input_ch_0(void) {
+ 100               		.loc 1 64 0
+ 101               	/* prologue: function */
+ 102               	/* frame size = 0 */
+ 103               	/* stack size = 0 */
+ 104               	.L__stack_usage = 0
+ 105               	.L8:
+  65:uart.c        ****     //check if a byte has been recieved or if the timeout has been excedded
+  66:uart.c        ****     while ((STAT0RXTX_REG & (1<<RX0C)) != (1<<RX0C))
+ 106               		.loc 1 66 0 discriminator 1
+ 107 0050 8091 C000 		lds r24,192
+ 108 0054 87FF      		sbrs r24,7
+ 109 0056 00C0      		rjmp .L8
+  67:uart.c        ****     {
+  68:uart.c        ****         continue;
+  69:uart.c        ****     }
+  70:uart.c        ****     return UDR0;
+ 110               		.loc 1 70 0
+ 111 0058 8091 C600 		lds r24,198
+  71:uart.c        **** }
+ 112               		.loc 1 71 0
+ 113 005c 0895      		ret
+ 114               	.LFE2:
+ 116               	.global	output_ch_0
+ 118               	output_ch_0:
+ 119               	.LFB3:
+  72:uart.c        **** 
+  73:uart.c        **** void output_ch_0(char data)
+  74:uart.c        **** {
+ 120               		.loc 1 74 0
+ 121               	/* prologue: function */
+ 122               	/* frame size = 0 */
+ 123               	/* stack size = 0 */
+ 124               	.L__stack_usage = 0
+ 125               	.LVL8:
+ 126               	.L11:
+  75:uart.c        ****     while ((STAT0RXTX_REG & (1<<UDR0E)) != (1<<UDR0E))
+ 127               		.loc 1 75 0 discriminator 1
+ 128 005e 9091 C000 		lds r25,192
+ 129 0062 95FF      		sbrs r25,5
+ 130 0064 00C0      		rjmp .L11
+  76:uart.c        ****     {
+  77:uart.c        ****         continue;
+  78:uart.c        ****     }
+  79:uart.c        ****     UDR0 = data;
+ 131               		.loc 1 79 0
+ 132 0066 8093 C600 		sts 198,r24
+ 133 006a 0895      		ret
+ 134               	.LFE3:
+ 206               	.Letext0:
+ 207               		.file 2 "/usr/lib/gcc/avr/4.7.2/../../../avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 uart.c
+     /tmp/cct7Qosq.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cct7Qosq.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cct7Qosq.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cct7Qosq.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cct7Qosq.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cct7Qosq.s:11     .text:0000000000000000 init_uart0
+     /tmp/cct7Qosq.s:30     .text:000000000000000e input_ch_w_timeout_0
+     /tmp/cct7Qosq.s:98     .text:0000000000000050 input_ch_0
+     /tmp/cct7Qosq.s:118    .text:000000000000005e output_ch_0
+
+NO UNDEFINED SYMBOLS
